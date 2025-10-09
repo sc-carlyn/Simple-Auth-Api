@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Simple Auth - Dark Theme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #000000;       /* arka plan siyah */
+      --card: #ffffff;     /* form kartı beyaz */
+      --accent: #dc2626;   /* kırmızı buton */
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin:0;
+      font-family: Inter, Arial, sans-serif;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: var(--bg);
+      padding:20px;
+    }
+    .wrap{
+      width:920px;
+      max-width:100%;
+      display:flex;
+      gap:24px;
+      align-items:stretch;
+    }
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:24px;
+      box-shadow: 0 8px 30px rgba(20,40,80,0.2);
+    }
+    .left{ flex:1; }
+    .right{ width:380px; }
+    h1 { margin:0 0 12px 0; color:var(--accent); font-size:24px;}
+    .subtitle { color:#4b5563; margin-bottom:16px; }
+    label { display:block; font-size:13px; color:#334155; margin-bottom:6px; margin-top:12px; }
+    input { width:100%; padding:10px 12px; border:1px solid #e6eefc; border-radius:8px; font-size:14px; }
+    button {
+      margin-top:14px;
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:none;
+      background:var(--accent); /* kırmızı buton */
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+    }
+    button:hover {
+      background: #b91c1c; /* hover koyu kırmızı */
+    }
+    .muted { font-size:13px; color:#64748b; margin-top:8px; }
+    #message { margin-top:12px; font-weight:600; padding:8px; border-radius:8px; display:none; }
+    .success { background:#e6ffef; color:#065f46; display:block; }
+    .error { background:#ffeded; color:#7f1d1d; display:block; }
+    .hint { font-size:13px; color:#475569; margin-top:6px; }
+    @media (max-width:900px){
+      .wrap{ flex-direction:column; }
+      .right{ width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card left">
+      <h1>Welcome</h1>
+      <div class="subtitle">Register a new account or login if you already have one.</div>
+
+      <form id="registerForm">
+        <label for="regName">Full name</label>
+        <input id="regName" type="text" placeholder="John Doe" required />
+
+        <label for="regEmail">Email</label>
+        <input id="regEmail" type="email" placeholder="you@example.com" required />
+
+        <label for="regPass">Password</label>
+        <input id="regPass" type="password" placeholder="At least 6 characters" required />
+
+        <button type="submit">Create account</button>
+        <div class="hint">Passwords are hashed on the server for demo purposes.</div>
+      </form>
+    </div>
+
+    <div class="card right">
+      <h1>Login</h1>
+      <div class="subtitle">Sign in with your email and password</div>
+
+      <form id="loginForm">
+        <label for="logEmail">Email</label>
+        <input id="logEmail" type="email" placeholder="you@example.com" required />
+
+        <label for="logPass">Password</label>
+        <input id="logPass" type="password" placeholder="Your password" required />
+
+        <button type="submit">Sign in</button>
+        <div id="message"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const messageEl = document.getElementById('message');
+
+    function showMessage(text, type='success'){
+      messageEl.textContent = text;
+      messageEl.className = '';
+      messageEl.classList.add(type === 'success' ? 'success' : 'error');
+      messageEl.style.display = 'block';
+      setTimeout(()=> messageEl.style.display = 'none', 4500);
+    }
+
+    // register
+    document.getElementById('registerForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value;
+      if (!name || !email || !password) return showMessage('All fields required', 'error');
+
+      try {
+        const res = await fetch('/register', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage(data.message || 'Registered', 'success');
+          document.getElementById('logEmail').value = email;
+        } else {
+          showMessage(data.message || 'Error', 'error');
+        }
+      } catch (err) {
+        showMessage('Network or server error', 'error');
+        console.error(err);
+      }
+    };
+
+    // login
+    document.getElementById('loginForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('logEmail').value.trim();
+      const password = document.getElementById('logPass').value;
+      if (!email || !password) return showMessage('All fields required', 'error');
+
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage(data.message || 'Login successful', 'success');
+        } else {
+          showMessage(data.message || 'Invalid credentials', 'error');
+        }
+      } catch (err) {
+        showMessage('Network or server error', 'error');
+        console.error(err);
+      }
+    };
+  </script>
+</body>
+</html>
