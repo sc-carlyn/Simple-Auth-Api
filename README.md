@@ -48,7 +48,7 @@ Example: email@example.com / password123
 
 ---
 
-## ⚙️ Technologies Used
+## ⚙️ **Technologies Used**
 
 - Node.js
 - Express
@@ -58,7 +58,7 @@ Example: email@example.com / password123
 
 ---
 
-## 📂 File Structure
+## 📂 **File Structure**
 
 simple-auth-api/
 ├── server.js
@@ -70,12 +70,12 @@ simple-auth-api/
 
 ---
 
-## 🤝 Contribution
+## 🤝 **Contribution**
 
 Feel free to fork this project, improve the authentication logic, add database integration, or enhance the UI. Pull requests are welcome!
 
 ---
 
-## 📝 License
+## 📝 **License**
 
 This project is licensed under the MIT License.
