@@ -23,31 +23,6 @@ This project demonstrates a simple backend for login functionality, built with N
 
 ---
 
-## 💻 How to Use
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/sc-carlyn/simple-auth-api.git
-cd simple-auth-api
-
-2️. Install Dependencies:
-
-npm install
-
-3️. Start the Server:
-
-node server.js
-
-4. Open your browser and navigate to:
-
-http://localhost:3000
-Enter your email and password to log in.
-
-Example: email@example.com / password123
-
----
-
 ## ⚙️ **Technologies Used**
 
 - Node.js
