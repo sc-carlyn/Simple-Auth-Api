@@ -19,8 +19,6 @@ This project demonstrates a simple backend for login functionality, built with N
 
 ![Login Demo](screenshot.png) 
 
-> Replace `screenshot.png` with your actual screenshot of the app.
-
 ---
 
 ## ⚙️ **Technologies Used**
